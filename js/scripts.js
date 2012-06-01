@@ -5,11 +5,17 @@ $(document).ready(function(){
    
    Local.Init(number);
    
-/* removed
+   //init canvas
+   $("#videos").resize(function(e){
+		$("canvas").height($("#videos").height());
+		console.log($("canvas").height());
+	});
+   /* removed
    $("#add").live('click', function(){
    		Local.Init(number+=1);
    });
 */	
+
 
 	$("#videos").sortable();
 	//$("#videos").disableSelection();
@@ -96,6 +102,18 @@ $(document).ready(function(){
 
 
 	$("#playall").live('click', function(){
+	
+	
+//		var c = jsPlumb.getConnections();
+//		console.log(c[0].sourceId, c[0].targetId);
+
+		var c = jsPlumb.getConnections(); 	
+		console.log(c);
+
+		for(var k=0; k<c.length; k++){
+			
+		}
+
 		var allVideos = [];
 		
 		for (var j=0; j< allVideos.length; j++){

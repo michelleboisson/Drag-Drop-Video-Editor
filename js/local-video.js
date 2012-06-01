@@ -18,14 +18,26 @@ Local.Init = function(position){
     _position = position;
 
     var vidHolderHtml = "<div class='local_drop ui-widget-content' id="+_position+"><div class='local_drop_text'>Drop movie files here<br>(mp4)</div></div>";
-    $("#videos").append(vidHolderHtml);
+     //connectors
+/*    var connectIn = document.createElement("div");
+    connectIn.className = "connector left";
+    connectIn.setAttribute("parentVid", _position);
+    localDrop.appendChild(connectIn);
+  */  
+    //connectIn.addEventListener("click", Local.Connector.click);
     
-    //lock/unlock the grid
-    $(".local_drop").draggable();
+/*    var connectOut = document.createElement("div");
+    connectOut.className = "connector right";
+    connectOut.setAttribute("parentVid", _position);
+    localDrop.appendChild(connectOut);
+*/
+    
+    $("#videos").append(vidHolderHtml);
+         
     var myVid = document.getElementById(_position);
     localDrop = document.getElementById(_position);    
     Local.Video.video = myVid;
-    Local.Video.addEvents();
+    //Local.Video.addEvents();
     
     //var localDrop = document.getElementById(_position);
     localDrop.addEventListener("dragenter", Local.Drag.enter, false);
@@ -33,28 +45,33 @@ Local.Init = function(position){
     localDrop.addEventListener("dragover", Local.Drag.over, false);
     localDrop.addEventListener("drop", Local.Drag.drop, false);
     localDrop.addEventListener("click", Local.Drag.click, false);
-}
+    
+    Canvas.Bind(_position);
+    
+   
 
+}
+//Dragging videos onto the placeholder
 Local.Drag = {
     enter : function(e){
         jQuery(this).addClass("drag_over");
-        jQuery(".local_drop_text").addClass("drag_over");
+        jQuery(this).find(".local_drop_text").addClass("drag_over");
         e.stopPropagation();
         e.preventDefault();
     },
     leave : function(){
-        jQuery(".local_drop").removeClass("drag_over");
-        jQuery(".local_drop_text").removeClass("drag_over");
+        jQuery(this).removeClass("drag_over");
+        jQuery(this).find(".local_drop_text").removeClass("drag_over");
     },
     over : function(e){
         jQuery(this).addClass("drag_over");
-        jQuery(".local_drop_text").addClass("drag_over");
+        jQuery(this).find(".local_drop_text").addClass("drag_over");
         e.stopPropagation();
         e.preventDefault();
     },
     drop : function(e){
-        jQuery(".local_drop").removeClass("drag_over");
-        jQuery(".local_drop_text").removeClass("drag_over").addClass("drag_drop");
+        jQuery(this).removeClass("drag_over");
+        jQuery(this).find(".local_drop_text").remove();
         var dt = e.dataTransfer;
         var files = dt.files;
         for (var i = 0; i < files.length; i++){
@@ -66,8 +83,14 @@ Local.Drag = {
         e.preventDefault();          
     },
     click : function(e){
-    	console.log("clicked", e.target);
-    	Local.Video.play(e.target.parentElement.getAttribute('id'));
+    	var parentID = e.target.parentNode.getAttribute("id");
+    	//is this click from a drag, do nothing
+    	if ($("#"+parentID).hasClass("ui-draggable-dragged")){
+	    	$("#"+parentID).removeClass("ui-draggable-dragged");
+    	}else{
+    		//if this click is a true click, not a drag, play/pause the click
+    		Local.Video.play(e.target.parentElement.getAttribute('id'));
+    	}
     }
 }
 
@@ -83,7 +106,8 @@ Local.Songs = {
 	//jQuery("#local_drop").append(videohtml);
       		var localDrop = target;
       		console.log("localDrop: ", localDrop);
-      		localDrop.innerHTML = videohtml;
+      		localDrop.innerHTML += videohtml;
+      		
         //var file = files[0];
         
         	
@@ -111,7 +135,7 @@ Local.Songs = {
             }
 
            // var fileURL = window.URL.createObjectURL(file);
-                        console.log("videoNode: " + videoNode);
+            console.log("videoNode: " + videoNode);
 
 
             //Local.GetID3(file, position);
@@ -137,10 +161,14 @@ Local.Video = {
         jQuery(".song_progress").css("width", 0);
         Local.Songs.queueNumber = id;
        // var file = Local.Songs.list[Local.Songs.queueNumber];
+                
         
         var thisVid = $("#"+id+" video");
-        console.log(thisVid);
         if (thisVid.get(0).paused == true){
+	        $('video','#videos').each(function(){
+		        this.pause(); //find all videos in #vid and pause them
+		    });
+
         	thisVid.get(0).play();
         	var percentage = thisVid.get(0).currentTime / thisVid.get(0).duration * 100;
         	console.log("playing", percentage);
@@ -149,28 +177,6 @@ Local.Video = {
         	thisVid.get(0).pause();
         	console.log("pausing");
         }
-
-        
-        
-       /* if ($('video[position='+Local.Songs.queueNumber+']').get(0).paused == true){
-        	$('video[position='+Local.Songs.queueNumber+']').get(0).play();
-        	var percentage = this.currentTime / this.duration;
-        	console.log("playing", percentage);
-        }
-        else {
-        	$('video[position='+Local.Songs.queueNumber+']').get(0).pause();
-        	console.log("pausing");
-        }
-        */
-        //Local.File.loaded();
-    /*    var fileReader = new FileReader();
-        fileReader.onload = Local.File.loaded;
-        fileReader.readAsDataURL(file);
-        jQuery(".song").removeClass("playing");
-        jQuery("#song_"+q).addClass("playing");
-        jQuery(".play_button").removeClass("paused");
-     */  // Local.Scrobble.nowplaying.request();
-    
     },
     next : function(){
         if (Local.Songs.queueNumber < Local.Songs.list.length){
@@ -210,6 +216,16 @@ Local.PlayButton = {
     }        
 }
 
+Local.Connectors = {
+	click : function(e){
+		console.log("CONNECT ME!");
+	}, 
+	ondrag : function(event, ui){
+//		console.log("dragging: ", event, ui);
+		Canvas.Bind;		
+	}
+	
+};
 
 
 
@@ -266,6 +282,3 @@ Local.GetID3 = function(file, position){
     }
 };
 
-
-//jQuery(".playButton").live("click", Local.PlayButton.click);
-jQuery(".song").live("click", Local.Songs.click);
