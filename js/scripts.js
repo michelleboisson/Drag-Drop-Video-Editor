@@ -18,11 +18,16 @@ $(document).ready(function(){
 
 
 	$("#videos").sortable();
-	//$("#videos").disableSelection();
+	$("#videos").disableSelection();
 	
 	$("#playallfs").live('click', function(){
 		if ($("#fullscreenvids").length <= 0){
 			$("#playallfs").text("Close Preview");
+		
+		$("._jsPlumb_endpoint").hide();
+		$("._jsPlumb_connector").hide();
+		$("._jsPlumb_overlay").hide();
+		
 		var allVideos = [];
 				
 		//loop through the elements in the dom, count the videos
@@ -97,6 +102,10 @@ $(document).ready(function(){
 		$("#playallfs").text("Play Preview Fullscreen");
 		$("#fullscreenvidsdiv").remove();
 		$("#videos .local_drop").animate({opacity: 1}, 500);
+		
+		$("._jsPlumb_endpoint").show();
+		$("._jsPlumb_connector").show();
+		$("._jsPlumb_overlay").show();
 	}
 	});//playallfs click
 
@@ -107,34 +116,49 @@ $(document).ready(function(){
 //		var c = jsPlumb.getConnections();
 //		console.log(c[0].sourceId, c[0].targetId);
 
-		var c = jsPlumb.getConnections(); 	
+		var c = jsPlumb.getConnections(0); 	
 		console.log(c);
 
 		
 		var allVideos = [];
+		var firstVid;
+		var lastVid;
 		
 		//loop through the elements in the dom, count the videos
-		$("video").each(function(index){			
+		$("video").each(function(index){
+			var parentID = $(this).parent().attr("id");
+/*			
+			if (!jsPlumb.isTarget($(this))){
+				firstVid = parentID;
+				console.log("firstVid", firstVid);
+			}
+			if (!jsPlumb.isSource($(this))){
+				lastVid = parentID;
+				console.log("lastVid", lastVid);
+			}	
+			
+*/
+			if($(this).get(0).paused == false){
+				console.log("now playing", parentID);
+				playNextConnected(parentID, -1); 
+			}
+			
 			allVideos.push($(this));
 		});
+
 		for (var j=0; j< allVideos.length; j++){
 			console.log("stopping all videos");
 			allVideos[j][0].pause();
 			allVideos[j][0].currentTime = 0;
 			
 		}
-			//allVideos[0].get(0).play();
+		
+		//lined sequence
+		//playNextConnected(firstVid, lastVid);
+		
 			var r = 0;
-			//allVideos[0].get(0).addEventListener("ended", function(){
 			console.log(allVideos.length +" movies to play");
 			playNext(0, allVideos);
-				
-			//});//video ended eventlistener
-			
-		//allVideos[r].get(0).addEventListener("ended", playNext);
-		
-		
-
 	});
 	
 	
@@ -151,9 +175,29 @@ function playNext(v, allVideos){
 							return;
 						}
 					});
-
-	
 }
+
+function playNextConnected(x, lastVid){
+					//$("#"+x+" video").get(0).play();
+					$("#"+x+" video").get(0).play();
+					console.log(x);
+					var vid = document.getElementById(x);
+					$("#video"+x).get(0).addEventListener("ended", function(){
+					console.log("stopped");
+						var next = jsPlumb.getConnections({source: x});
+						console.log(x, next);
+							next = next[0].targetId;
+							console.log(next);
+						if (x != lastVid){
+							console.log("updating video", next);
+							
+							playNextConnected(next, lastVid);
+						}else{
+							$("#"+lastVid+" video").get(0).play();
+						}
+					});
+}
+
 
 
 

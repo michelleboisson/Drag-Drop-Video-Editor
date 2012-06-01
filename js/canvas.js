@@ -18,8 +18,6 @@ Canvas.Bind = function(id){
 
 	//WORK IN PROGRESS!
 
-	console.log("Attemping to bind");
-//	jsPlumb.draggable($(".local_drop");
     jsPlumb.draggable($(".local_drop"),{
     	stop: function(){
     		$(this).addClass("ui-draggable-dragged");

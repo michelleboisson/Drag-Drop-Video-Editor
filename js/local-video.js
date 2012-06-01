@@ -105,7 +105,6 @@ Local.Songs = {
 		
 	//jQuery("#local_drop").append(videohtml);
       		var localDrop = target;
-      		console.log("localDrop: ", localDrop);
       		localDrop.innerHTML += videohtml;
       		
         //var file = files[0];
