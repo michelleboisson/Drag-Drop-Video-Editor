@@ -130,7 +130,7 @@ Local.Songs = {
             console.log(message, isError);
 
             if (isError) {
-            	console.log("ERROR");
+            	console.log("ERROR", message);
                 return;
             }
 

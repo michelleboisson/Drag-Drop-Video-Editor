@@ -110,33 +110,29 @@ $(document).ready(function(){
 		var c = jsPlumb.getConnections(); 	
 		console.log(c);
 
-		for(var k=0; k<c.length; k++){
-			
-		}
-
+		
 		var allVideos = [];
 		
+		//loop through the elements in the dom, count the videos
+		$("video").each(function(index){			
+			allVideos.push($(this));
+		});
 		for (var j=0; j< allVideos.length; j++){
 			console.log("stopping all videos");
 			allVideos[j][0].pause();
 			allVideos[j][0].currentTime = 0;
 			
 		}
-		
-		//loop through the elements in the dom, count the videos
-		$("video").each(function(index){			
-			allVideos.push($(this));
-		});
-		
-			allVideos[0].get(0).play();
+			//allVideos[0].get(0).play();
 			var r = 0;
-			allVideos[0].get(0).addEventListener("ended", function(){
-				if (r < allVideos.length){
-					r++;
-					allVideos[r].get(0).play();
-				}//r++;
-			});//video ended eventlistener
-
+			//allVideos[0].get(0).addEventListener("ended", function(){
+			console.log(allVideos.length +" movies to play");
+			playNext(0, allVideos);
+				
+			//});//video ended eventlistener
+			
+		//allVideos[r].get(0).addEventListener("ended", playNext);
+		
 		
 
 	});
@@ -144,6 +140,20 @@ $(document).ready(function(){
 	
 });//end document ready
 
+
+function playNext(v, allVideos){
+					allVideos[v].get(0).play();
+					allVideos[v].get(0).addEventListener("ended", function(){
+						if (v < allVideos.length){
+							console.log("updating r", v+1);
+							playNext(v+1, allVideos);
+						}else{
+							return;
+						}
+					});
+
+	
+}
 
 
 
