@@ -18,19 +18,6 @@ Local.Init = function(position){
     _position = position;
 
     var vidHolderHtml = "<div class='local_drop ui-widget-content' id="+_position+"><div class='local_drop_text'>Drop movie files here<br>(mp4)</div></div>";
-     //connectors
-/*    var connectIn = document.createElement("div");
-    connectIn.className = "connector left";
-    connectIn.setAttribute("parentVid", _position);
-    localDrop.appendChild(connectIn);
-  */  
-    //connectIn.addEventListener("click", Local.Connector.click);
-    
-/*    var connectOut = document.createElement("div");
-    connectOut.className = "connector right";
-    connectOut.setAttribute("parentVid", _position);
-    localDrop.appendChild(connectOut);
-*/
     
     $("#videos").append(vidHolderHtml);
          
