@@ -177,15 +177,18 @@ function playNextConnected(x, lastVid){
 					console.log("stopped");
 						var next = jsPlumb.getConnections({source: x});
 						console.log(x, next);
+						if(next[0] == undefined){
+							$("#alert").remove();
+							return;
+						}
 							next = next[0].targetId;
 							console.log(next);
-						if (x != lastVid){
+						if (next != lastVid){
 							console.log("updating video", next);
 							
 							playNextConnected(next, lastVid);
-						}else{
-							$("#"+lastVid+" video").get(0).play();
 						}
+						
 					});
 }
 
