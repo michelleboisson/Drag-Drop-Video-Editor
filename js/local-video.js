@@ -1,8 +1,5 @@
 /*
-name: Local Video Player
-author: Michelle Boisson
-requires: jquery-1.7.1, jquery-ui.1.8.20, jquery.ui.draggable, jquery.ui.sortable
-description: handle file drops and video player
+some of this taken from Dan Kantor's audio player http://ex.fm/static/js/labs/local.js
 */
 
 if (typeof(Local) == 'undefined'){
