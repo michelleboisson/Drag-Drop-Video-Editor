@@ -1,4 +1,4 @@
-A drag and drop video player. Connect videos visually to determine the sequence.
+A drag and drop video player. Connect videos visually to determine the sequence. (Chrome, please)
 
 # WHAT IT DOES
 You can:
