@@ -27,11 +27,8 @@ canvas {
   /* width and height can be anything, as long as they're equal */
 }
 
-.left{
-  left:-10px; 
-}
-.right{
-	right: -10px;
+#alert{
+	color: #ee3838;
 }
 
 #videos {

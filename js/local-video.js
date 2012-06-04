@@ -221,7 +221,7 @@ Local.Connectors = {
 	}, 
 	ondrag : function(event, ui){
 //		console.log("dragging: ", event, ui);
-		Canvas.Bind;		
+		//Canvas.Bind;		
 	}
 	
 };

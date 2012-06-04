@@ -124,41 +124,32 @@ $(document).ready(function(){
 		var firstVid;
 		var lastVid;
 		
+		var sumthinPlaying = false;
+		
 		//loop through the elements in the dom, count the videos
 		$("video").each(function(index){
 			var parentID = $(this).parent().attr("id");
-/*			
-			if (!jsPlumb.isTarget($(this))){
-				firstVid = parentID;
-				console.log("firstVid", firstVid);
-			}
-			if (!jsPlumb.isSource($(this))){
-				lastVid = parentID;
-				console.log("lastVid", lastVid);
-			}	
-			
-*/
+
 			if($(this).get(0).paused == false){
 				console.log("now playing", parentID);
-				playNextConnected(parentID, -1); 
+				playNextConnected(parentID, -1);
+				sumthinPlaying = true;
 			}
 			
 			allVideos.push($(this));
 		});
-
-		for (var j=0; j< allVideos.length; j++){
-			console.log("stopping all videos");
-			allVideos[j][0].pause();
-			allVideos[j][0].currentTime = 0;
-			
-		}
-		
-		//lined sequence
-		//playNextConnected(firstVid, lastVid);
-		
+			console.log("Checking playing...");
+			if (sumthinPlaying == false){
+				console.log("nothing playing");
+				$(".big_description").append("<span id='alert'>Start playing the first video</span>");
+			}
+			else{
+			console.log("something playing");
+				$("#alert").html("Playing the sequence");
+			}
 			var r = 0;
 			console.log(allVideos.length +" movies to play");
-			playNext(0, allVideos);
+			//playNext(0, allVideos);
 	});
 	
 	
