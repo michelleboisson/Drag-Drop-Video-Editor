@@ -120,7 +120,6 @@ Local.Songs = {
            // var fileURL = window.URL.createObjectURL(file);
             console.log("videoNode: " + videoNode);
 
-
             //Local.GetID3(file, position);
     },
     click : function(e){
@@ -140,7 +139,14 @@ Local.Video = {
         Local.Video.video.addEventListener("timeupdate", Local.Video.timeUpdate, false);
     },
     play : function(id){
-        Local.Video.half = false;
+        var popcorn = Popcorn("#video"+id);
+         popcorn.footnote({
+             start: 2,
+             end: 5,
+             target: "footnote",
+             text: "Pop! "+_position
+             }); 
+
         jQuery(".song_progress").css("width", 0);
         Local.Songs.queueNumber = id;
        // var file = Local.Songs.list[Local.Songs.queueNumber];
@@ -151,14 +157,19 @@ Local.Video = {
 	        $('video','#videos').each(function(){
 		        this.pause(); //find all videos in #vid and pause them
 		    });
+ 
+            //Local.Video.play(id-1);
+           	popcorn.play();
 
-        	thisVid.get(0).play();
+
+        	//thisVid.get(0).play();
         	var percentage = thisVid.get(0).currentTime / thisVid.get(0).duration * 100;
         	console.log("playing", percentage);
         }
         else {
-        	thisVid.get(0).pause();
-        	console.log("pausing");
+        	//thisVid.get(0).pause();
+        	popcorn.pause();
+        	console.log("pausing at ", popcorn.played());
         }
     },
     next : function(){

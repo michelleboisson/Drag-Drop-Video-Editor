@@ -44,14 +44,10 @@ Canvas.Bind = function(id){
 	var endpoint = jsPlumb.addEndpoint($("#"+id), targetPointOptions);
 	var newpoint = jsPlumb.addEndpoint($("#"+id), sourcePointOptions);
 
+
+//document.addEventListener( "DOMContentLoaded", function() {
+ 
 }
-
-
-
-
-
-
-
 
 
 /*var canvas, context;
