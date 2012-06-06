@@ -36,7 +36,7 @@
 <div class="demo">
 
 <p>
-	<label for="amount">Price range:</label>
+	<label for="amount">Clip range:</label>
 	<input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
 </p>
 
@@ -73,29 +73,31 @@
   <script src="js/local-video.js"></script>
   <script src="js/scripts.js"></script>
   <script src="js/canvas.js"></script>
+  
   <script type="text/javascript">
-    		var popcorn;
-          document.addEventListener( "DOMContentLoaded", function() {
-  
-            popcorn = Popcorn( "#ourvideo");
-  
-            popcorn.footnote({
-             start: 2,
-             end: 5,
-             target: "footnote",
-             text: "Pop!"
-            });
-           states();
-           //popcorn.play();
-           
-           
-           
-           
-           popcorn.listen("timeupdate", function() {
-           		//console.log(popcorn.played());
-           	});           	
-         }, false );//end document ready
-         
+  	  var popcorn;
+	  document.addEventListener( "DOMContentLoaded", function() {
+	
+	    popcorn = Popcorn( "#ourvideo");
+	
+	    popcorn.footnote({
+	     start: 2,
+	     end: 5,
+	     target: "footnote",
+	     text: "Pop!"
+	    });
+	   
+	   states();
+	   //popcorn.play();
+	   
+	   
+	   
+	   
+	   popcorn.listen("timeupdate", function() {
+	   		//console.log(popcorn.played());
+	   	});           	
+	 }, false );//end document ready
+	 
 
 
  var states = function() {
@@ -117,7 +119,7 @@
         console.log( "can play whole video at current buffer rate, readyState is " + rdy );
         var movieLength = popcorn.duration();
            
-              console.log("init slider");
+        console.log("init slider");
 		$( "#slider-range" ).slider({
 				range: true,
 				min: 0,

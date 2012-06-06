@@ -29,10 +29,9 @@ Local.Init = function(position){
     localDrop.addEventListener("dragover", Local.Drag.over, false);
     localDrop.addEventListener("drop", Local.Drag.drop, false);
     localDrop.addEventListener("click", Local.Drag.click, false);
+    localDrop.addEventListener("dblclick", Local.Edit.open, false);
     
-    Canvas.Bind(_position);
-    
-   
+    Canvas.Bind(_position);   
 
 }
 //Dragging videos onto the placeholder
@@ -63,6 +62,7 @@ Local.Drag = {
             Local.Songs.add(file, this);
         }
         Local.Init(Local.Songs.list.length+1);
+        
         e.stopPropagation();
         e.preventDefault();          
     },
@@ -119,7 +119,8 @@ Local.Songs = {
 
            // var fileURL = window.URL.createObjectURL(file);
             console.log("videoNode: " + videoNode);
-
+            var popcorn = popcorn("video"+_position);
+            Canvas.Popcorn.checkReadyState(popcorn);
             //Local.GetID3(file, position);
     },
     click : function(e){
@@ -210,69 +211,47 @@ Local.PlayButton = {
     }        
 }
 
-Local.Connectors = {
-	click : function(e){
-		console.log("CONNECT ME!");
-	}, 
-	ondrag : function(event, ui){
-//		console.log("dragging: ", event, ui);
-		//Canvas.Bind;		
-	}
-	
-};
-
-
-
-Local.GetID3 = function(file, position){
-    var song = {
-        "title" : file.name
-    }
-    if (file.type == 'audio/mp3'){
-        var reader = new FileReader();
-        reader.onload = function(){
-            var data=this.result;
-            var tagPosition=data.length-128;
-            var begin={
-                "id":tagPosition,
-                "title":tagPosition+3,
-                "artist":tagPosition+33,
-                "album":tagPosition+63,
-                "year":tagPosition+93,
-                "comment":tagPosition+97,
-                "genre":tagPosition+127
-            };
-            var end={
-                "id":tagPosition+3,
-                "title":tagPosition+33,
-                "artist":tagPosition+63,
-                "album":tagPosition+93,
-                "year":tagPosition+97,
-                "comment":tagPosition+127,
-                "genre":tagPosition+128
-            };
-            var len={
-                "id":3,
-                "title":30,
-                "artist":30,
-                "album":30,
-                "year":4,
-                "comment":30,
-                "genre":1
-            };
-            if (data[tagPosition]=="T"&&data[tagPosition+1]=="A"&&data[tagPosition+2]=="G"){
-                song = {
-                    "title" : data.slice(begin.title, end.title).replace(/\0/ig,""),
-                    "artist" : data.slice(begin.artist, end.artist).replace(/\0/ig,""),
-                    "album" : data.slice(begin.album, end.album).replace(/\0/ig,""),
-                    "genre" : data.slice(begin.genre, end.genre).replace(/\0/ig,"")
-                }
-                file.song = song;
-                jQuery("#song_name_"+position).html(song.title+" by "+song.artist);
-            }
-           
-        };
-        var blob = file.webkitSlice(file.size-128,file.size);
-        reader.readAsBinaryString(blob);
-    }
+Local.Edit = {
+	open : function(e){
+		console.log("Opening edit window", e);
+		
+		var videoId = e.target.id;
+		
+		//create modal window
+		var modal = document.createElement("div");
+		modal.setAttribute('id','dialog-modal');
+		modal.setAttribute('title', 'Edit '+videoId);		
+		document.getElementById("videos").appendChild(modal);
+		
+		//populate modal window with edit tools
+		var videoSrc = document.getElementById(videoId).getAttribute("src");
+		
+		var videohtml = "<video src='"+videoSrc+"' controls id='edit-"+videoId+"' "+
+  "preload='auto' width='640' height='360'></video><br/>"+
+  "<label for='amount'>Clip range:</label>"+
+	"<input type='text' id='amount' style='border:0; color:#f6931f; font-weight:bold;' />"+
+"<div id='slider-range'></div>"+
+"<button id='play-clip'>Play Clip</button>"+
+"<button id='save-clip'>Save Clip</button>";
+		
+		
+		
+		$( "#dialog-modal" ).dialog({
+			width: 800,
+			height: 500,
+			modal: true,
+			closeOnEscape: true,
+			close: function(event, ui) { 
+				$(this).remove();
+			}
+		});
+		
+		var modal = document.getElementById("dialog-modal");
+		modal.innerHTML = videohtml;
+		var popcorn = Popcorn("#"+videoId);
+		//var popcorn = Popcorn("#edit-"+videoId);
+		//Canvas.Popcorn.checkReadyState(popcorn);
+		Canvas.Popcorn.initSlider(popcorn.duration(), videoId);
+	} 
 };
 

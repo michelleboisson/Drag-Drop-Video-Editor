@@ -6,10 +6,7 @@ $(document).ready(function(){
    Local.Init(number);
    
    //init canvas
-   $("#videos").resize(function(e){
-		$("canvas").height($("#videos").height());
-		console.log($("canvas").height());
-	});
+ 
    /* removed
    $("#add").live('click', function(){
    		Local.Init(number+=1);
