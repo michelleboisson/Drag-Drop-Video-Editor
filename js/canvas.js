@@ -50,6 +50,7 @@ Canvas.Popcorn = {
 	clipBegin : 0,
 	clipEnd: 0,
 	thisPopcorn: {},
+	videoId: '',
 	
 	checkReadyState : function(popcorn){
 	console.log(popcorn.duration());
@@ -79,8 +80,12 @@ Canvas.Popcorn = {
 	initSlider : function(vidDuration, videoId){
 		//var movieLength = popcorn.duration();
 		var movieLength = vidDuration;
-		        
+		Canvas.Popcorn.videoId = videoId;           
         Canvas.Popcorn.thispopcorn = Popcorn("#edit-"+videoId);
+        
+        Canvas.Popcorn.clipBegin = $("#"+videoId).attr("startClip");
+        Canvas.Popcorn.clipEnd = $("#"+videoId).attr("endClip");
+        
         console.log("init slider");
 		$( "#slider-range" ).slider({
 				range: true,
@@ -91,7 +96,9 @@ Canvas.Popcorn = {
 				slide: function( event, ui ) {
 				
 					Canvas.Popcorn.clipBegin = ui.values[ 0 ];
+					$("#"+videoId).attr("startClip", ui.values[ 0 ]);
 					Canvas.Popcorn.clipEnd = ui.values[ 1 ];
+					$("#"+videoId).attr("endClip", ui.values[ 1 ]);
 					
 					$( "#amount" ).val( ui.values[ 0 ] + "s. - " + ui.values[ 1 ]+"s.");
 					Canvas.Popcorn.thispopcorn.currentTime(ui.value);

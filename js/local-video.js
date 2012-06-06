@@ -85,7 +85,7 @@ Local.Songs = {
         Local.Songs.list.push(file);
         //var position = Local.Songs.list.length - 1;
         var videohtml = "<video position='"+_position+"' src='' id='video"+_position+"' class='video-js vjs-default-skin' "+
-  "preload='auto' width='320' height='180'></video>";
+  "preload='auto' width='320' height='180' startClip='' endClip=''></video>";
 		
 	//jQuery("#local_drop").append(videohtml);
       		var localDrop = target;
