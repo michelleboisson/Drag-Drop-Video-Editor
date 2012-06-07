@@ -85,7 +85,7 @@ Local.Songs = {
         Local.Songs.list.push(file);
         //var position = Local.Songs.list.length - 1;
         var videohtml = "<video position='"+_position+"' src='' id='video"+_position+"' class='video-js vjs-default-skin' "+
-  "preload='auto' width='320' height='180' startClip='' endClip=''></video>";
+  "preload='auto' width='320' height='180' startClip='' endClip='' stopped='true'></video>";
 		
 	//jQuery("#local_drop").append(videohtml);
       		var localDrop = target;
@@ -132,45 +132,60 @@ Local.Songs = {
 
 Local.Video = {
     video : null,
-    half : false,
-    addEvents : function(){
-        Local.Video.video.addEventListener("ended", Local.Video.next, false);
-        Local.Video.video.addEventListener("pause", Local.Video.paused, false);
-        Local.Video.video.addEventListener("play", Local.Video.played, false);
-        Local.Video.video.addEventListener("timeupdate", Local.Video.timeUpdate, false);
-    },
     play : function(id){
         var popcorn = Popcorn("#video"+id);
-         popcorn.footnote({
+       /*  popcorn.footnote({
              start: 2,
              end: 5,
              target: "footnote",
              text: "Pop! "+_position
              }); 
-
-        jQuery(".song_progress").css("width", 0);
-        Local.Songs.queueNumber = id;
-       // var file = Local.Songs.list[Local.Songs.queueNumber];
-                
-        
+       */
+             
         var thisVid = $("#"+id+" video");
-        if (thisVid.get(0).paused == true){
+        if (popcorn.paused() == true){
+
 	        $('video','#videos').each(function(){
 		        this.pause(); //find all videos in #vid and pause them
 		    });
  
             //Local.Video.play(id-1);
-           	popcorn.play();
-
+            var start = thisVid.attr('startClip');
+            var stop = thisVid.attr('endClip');
+            
+            if (stop == ''){
+	            stop = popcorn.duration();
+	            thisVid.attr('endClip', stop);
+            }
+            
+            if (start == ''){
+	            start = 0;
+	            thisVid.attr('startClip', start);
+            }    
+            
+            if (popcorn.currentTime() >= stop){
+	            //start = thisVid.attr('startClip');
+	            //popcorn.currentTime(start);
+            }
+            
+           	popcorn.play(start);
+           	console.log("play until: "+ stop);
+           	popcorn.on('timeupdate', function() { 
+           	if(popcorn.currentTime() >= stop){	
+           		popcorn.pause();
+           		popcorn.currentTime(popcorn.duration());
+				console.log(popcorn, popcorn.currentTime(), popcorn.ended())
+				}
+           	});
 
         	//thisVid.get(0).play();
         	var percentage = thisVid.get(0).currentTime / thisVid.get(0).duration * 100;
-        	console.log("playing", percentage);
+        	console.log("played", popcorn.played());
         }
         else {
         	//thisVid.get(0).pause();
         	popcorn.pause();
-        	console.log("pausing at ", popcorn.played());
+        	console.log("was playing, now pausing at ", popcorn.played());
         }
     },
     next : function(){
@@ -199,17 +214,6 @@ Local.Video = {
     }
 }
 
-Local.PlayButton = {
-    click : function(e){
-        var position = parseInt(jQuery(this).attr("position"));
-        if (jQuery(this).parent().hasClass("playing")){
-            Local.Video.video.pause();
-        } else {
-                Local.Video.play(position);
-            }
-        e.stopPropagation();
-    }        
-}
 
 Local.Edit = {
 	open : function(e){
@@ -231,7 +235,7 @@ Local.Edit = {
   "<label for='amount'>Clip range:</label>"+
 	"<input type='text' id='amount' style='border:0; color:#f6931f; font-weight:bold;' />"+
 "<div id='slider-range'></div>"+
-"<button id='play-clip'>Play Clip</button>"+
+"<button id='play-clip'>Play Clip</button> "+
 "<button id='save-clip'>Save Clip</button>";
 		
 		

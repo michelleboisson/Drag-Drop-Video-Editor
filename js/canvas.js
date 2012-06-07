@@ -88,38 +88,49 @@ Canvas.Popcorn = {
         
         console.log("init slider");
 		$( "#slider-range" ).slider({
-				range: true,
+				//range: true,
 				min: 0,
-				step: 0.1,
+				step: 0.01,
 				max: movieLength,
-				values: [ Canvas.Popcorn.clipBegin, Canvas.Popcorn.clipEnd ],
+				values: [ Canvas.Popcorn.clipBegin, 5, Canvas.Popcorn.clipEnd ],
 				slide: function( event, ui ) {
-				
 					Canvas.Popcorn.clipBegin = ui.values[ 0 ];
 					$("#"+videoId).attr("startClip", ui.values[ 0 ]);
-					Canvas.Popcorn.clipEnd = ui.values[ 1 ];
-					$("#"+videoId).attr("endClip", ui.values[ 1 ]);
 					
-					$( "#amount" ).val( ui.values[ 0 ] + "s. - " + ui.values[ 1 ]+"s.");
+					Canvas.Popcorn.clipEnd = ui.values[ 2 ];
+					$("#"+videoId).attr("endClip", ui.values[ 2 ]);
+					
+					$( "#amount" ).val( ui.values[ 0 ] + "s. - " + ui.values[ 2 ]+"s.");
 					Canvas.Popcorn.thispopcorn.currentTime(ui.value);
 					//console.log(ui, event);
 				}
-			});
-			$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
-				"s. - " + $( "#slider-range" ).slider( "values", 1 ) +"s.");
 				
-			document.getElementById("play-clip").addEventListener('click', Canvas.Popcorn.playclip, false);
-			document.getElementById("save-clip").addEventListener('click', Canvas.Popcorn.saveclip, false);
+			});
+			var sliderindicator = "div class='ui-slider-range ui-widget-header' style='left:"+ Canvas.Popcorn.clipBegin +"; width:0;'></div>";
+			$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
+				"s. - " + $( "#slider-range" ).slider( "values", 2 ) +"s.");
+				
+			document.getElementById("play-clip")
+					.addEventListener('click', Canvas.Popcorn.playclip, false);
+			document.getElementById("save-clip")
+					.addEventListener('click', Canvas.Popcorn.saveclip, false);
 	},
 	playclip : function(){
 		var thisVid = Canvas.Popcorn.thispopcorn;
 		thisVid.play(Canvas.Popcorn.clipBegin);
-		thisVid.listen('timeupdate', function(){
+		thisVid.on('timeupdate', function(){
+			$( "#slider-range" ).slider( "option", "values", [Canvas.Popcorn.clipBegin,thisVid.currentTime(), Canvas.Popcorn.clipEnd] );
 			if(thisVid.currentTime() >= Canvas.Popcorn.clipEnd){
 				thisVid.pause();
+				console.log("ended? "+thisVid.ended());
+				Canvas.Popcorn.stopplayingclip();
 			}
 		})
 		
+	},
+	stopplayingclip : function (){
+		var thisVid = Canvas.Popcorn.thispopcorn;
+		thisVid.off('timeupdate');
 	},
 	saveclip : function(){
 		alert("Saving the clip!");

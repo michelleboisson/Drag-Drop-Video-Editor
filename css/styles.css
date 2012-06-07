@@ -1,4 +1,4 @@
-*{padding: 0; margin: 0}
+*{padding: 0; margin: 0; font-family: Helvetica, sans-serif;}
 
 html, body {
   width:  100%;
@@ -28,8 +28,39 @@ canvas {
 }
 
 #alert{
-	color: #ee3838;
+	color: red;
 }
+
+
+.onair{
+	font-style: bold;
+	text-transform: uppercase;
+	animation: onair 1s linear 1s infinite alternate;
+	-moz-animation: onair 1s linear 1s infinite alternate; /* Firefox */
+	-webkit-animation: onair 1s linear 1s infinite alternate; /* Safari and Chrome */
+}
+@keyframes onair
+{
+0%   {text-shadow:-1px 1px 2px red, 1px -1px 2px #dc1111; }
+50%  {text-shadow:-1px 1px 8px red, 1px -1px 8px #dc1111; }
+100% {text-shadow:-1px 1px 2px red, 1px -1px 2px #dc1111; }
+}
+
+@-moz-keyframes onair /* Firefox */
+{
+0%   {text-shadow:-1px 1px 2px red, 1px -1px 2px #dc1111; }
+50%  {text-shadow:-1px 1px 8px red, 1px -1px 8px #dc1111; }
+100% {text-shadow:-1px 1px 2px red, 1px -1px 2px #dc1111; }
+}
+
+@-webkit-keyframes onair /* Safari and Chrome */
+{
+0%   {text-shadow:-1px 1px 2px red, 1px -1px 2px #dc1111; }
+50%  {text-shadow:-1px 1px 8px red, 1px -1px 8px #dc1111; }
+100% {text-shadow:-1px 1px 2px red, 1px -1px 2px #dc1111; }
+}
+
+
 
 #videos {
 	z-index: 1;
@@ -47,6 +78,11 @@ canvas {
 	height: 320px
 	text-align: center;
 	
+}
+/*this is the 'play head' slider*/
+.ui-slider-handle:nth-of-type(2){
+	width: 3px!important;
+	background: #999!important;
 }
 
 .local_drop {

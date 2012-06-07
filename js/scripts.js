@@ -126,7 +126,7 @@ $(document).ready(function(){
 			}
 			else{
 			console.log("something playing");
-				$(".big_description").append("<span id='alert'></span>");
+				$(".big_description").append("<span id='alert' class='onair'></span>");
 				$("#alert").html("Playing the sequence");
 				playNextConnected(firstID, -1);
 			}
@@ -153,25 +153,28 @@ function playNext(v, allVideos){
 
 function playNextConnected(x, lastVid){
 	//$("#"+x+" video").get(0).play();
-	$("#"+x+" video").get(0).play();
+	var thisVid = Popcorn("#video"+x);
+	
+	//thisVid.play();
 	console.log(x);
-	var vid = document.getElementById(x);
-	$("#video"+x).get(0).addEventListener("ended", function(){
-	console.log("stopped");
+	
+	//Local.Video.play(x);
+	
+	thisVid.on("ended", function(){
+//		console.log("stopped");
 		var next = jsPlumb.getConnections({source: x});
-		console.log(x, next);
+//		console.log(x, next);
 		if(next[0] == undefined){
 			$("#alert").remove();
 			return;
 		}
 			next = next[0].targetId;
-			console.log(next);
 		if (next != lastVid){
 			console.log("updating video", next);
-			
+			Local.Video.play(next);
 			playNextConnected(next, lastVid);
 		}
-		
+	
 	});
 }
 
