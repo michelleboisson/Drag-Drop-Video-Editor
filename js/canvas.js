@@ -106,37 +106,56 @@ Canvas.Popcorn = {
 				}
 				
 			});
-			var sliderindicator = "div class='ui-slider-range ui-widget-header' style='left:"+ Canvas.Popcorn.clipBegin +"; width:0;'></div>";
+			var sliderindicator = "<div class='ui-slider-range ui-widget-header' style='left:"+ Canvas.Popcorn.clipBegin +"; width:0;'></div>";
 			$( "#amount" ).val( $( "#slider-range" ).slider( "values", 0 ) +
 				"s. - " + $( "#slider-range" ).slider( "values", 2 ) +"s.");
 				
 			document.getElementById("play-clip")
-					.addEventListener('click', Canvas.Popcorn.playclip, false);
-			document.getElementById("save-clip")
-					.addEventListener('click', Canvas.Popcorn.saveclip, false);
+					.addEventListener('click', Canvas.Popcorn.playClip, false);
+			document.getElementById("delete-clip")
+					.addEventListener('click', Canvas.Popcorn.deleteClip, false);
 	},
-	playclip : function(){
+	playClip : function(){
 		var thisVid = Canvas.Popcorn.thispopcorn;
-		thisVid.play(Canvas.Popcorn.clipBegin);
-		thisVid.on('timeupdate', function(){
-			$( "#slider-range" ).slider( "option", "values", [Canvas.Popcorn.clipBegin,thisVid.currentTime(), Canvas.Popcorn.clipEnd] );
-			if(thisVid.currentTime() >= Canvas.Popcorn.clipEnd){
-				thisVid.pause();
-				console.log("ended? "+thisVid.ended());
-				Canvas.Popcorn.stopplayingclip();
-			}
-		})
+		
+		if (thisVid.paused()){
+			$("#play-clip").text("Pause Clip");
+			thisVid.play(Canvas.Popcorn.clipBegin);
+			thisVid.on('timeupdate', function(){
+				$( "#slider-range" ).slider( "option", "values", [Canvas.Popcorn.clipBegin,thisVid.currentTime(), Canvas.Popcorn.clipEnd] );
+				if(thisVid.currentTime() >= Canvas.Popcorn.clipEnd){			
+					Canvas.Popcorn.stopPlayingClip();
+				}
+			})
+		}else{
+			thisVid.pause();
+			$("#play-clip").text("Play Clip");
+		}
+	},
+	stopPlayingClip : function (){
+		var thisVid = Canvas.Popcorn.thispopcorn;
+		
+					thisVid.pause();
+					console.log("ended? "+thisVid.ended());
+					thisVid.off('timeupdate');//remove event listener
+					$("#play-clip").text("Play Clip");
+				
+
+		
 		
 	},
-	stopplayingclip : function (){
-		var thisVid = Canvas.Popcorn.thispopcorn;
-		thisVid.off('timeupdate');
-	},
-	saveclip : function(){
+	saveClip : function(){
 		alert("Saving the clip!");
 	},
 	deleteClip : function(){
-		console.log("deleting clip! Are you sure?");
+		if (confirm("Deleting this clip from the canvas! Are you sure?")){
+			console.log("YEP!");
+			$( "#dialog-modal" ).remove();
+			jsPlumb.removeAllEndpoints($("#"+Canvas.Popcorn.videoId).parent());
+
+			$("#"+Canvas.Popcorn.videoId).parent().remove();
+		}
+		
 	}
 }
 

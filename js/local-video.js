@@ -230,13 +230,13 @@ Local.Edit = {
 		//populate modal window with edit tools
 		var videoSrc = document.getElementById(videoId).getAttribute("src");
 		
-		var videohtml = "<video src='"+videoSrc+"' controls id='edit-"+videoId+"' "+
+		var videohtml = "<video src='"+videoSrc+"' id='edit-"+videoId+"' "+
   "preload='auto' width='640' height='360'></video><br/>"+
   "<label for='amount'>Clip range:</label>"+
 	"<input type='text' id='amount' style='border:0; color:#f6931f; font-weight:bold;' />"+
 "<div id='slider-range'></div>"+
 "<button id='play-clip'>Play Clip</button> "+
-"<button id='save-clip'>Save Clip</button>";
+"<button id='delete-clip'>Delete Clip</button>";
 		
 		
 		
