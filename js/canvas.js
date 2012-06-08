@@ -49,6 +49,7 @@ Canvas.Popcorn = {
 
 	clipBegin : 0,
 	clipEnd: 0,
+	clipCurrent :0,
 	thisPopcorn: {},
 	videoId: '',
 	
@@ -85,6 +86,7 @@ Canvas.Popcorn = {
         
         Canvas.Popcorn.clipBegin = $("#"+videoId).attr("startClip");
         Canvas.Popcorn.clipEnd = $("#"+videoId).attr("endClip");
+        Canvas.Popcorn.clipCurrent = $("#"+videoId).attr("startClip");
         
         console.log("init slider");
 		$( "#slider-range" ).slider({
@@ -92,13 +94,15 @@ Canvas.Popcorn = {
 				min: 0,
 				step: 0.01,
 				max: movieLength,
-				values: [ Canvas.Popcorn.clipBegin, 5, Canvas.Popcorn.clipEnd ],
+				values: [ Canvas.Popcorn.clipBegin, Canvas.Popcorn.clipCurrent, Canvas.Popcorn.clipEnd ],
 				slide: function( event, ui ) {
 					Canvas.Popcorn.clipBegin = ui.values[ 0 ];
 					$("#"+videoId).attr("startClip", ui.values[ 0 ]);
 					
 					Canvas.Popcorn.clipEnd = ui.values[ 2 ];
 					$("#"+videoId).attr("endClip", ui.values[ 2 ]);
+					
+					Canvas.Popcorn.clipCurrent = ui.values[0];
 					
 					$( "#amount" ).val( ui.values[ 0 ] + "s. - " + ui.values[ 2 ]+"s.");
 					Canvas.Popcorn.thispopcorn.currentTime(ui.value);
@@ -120,15 +124,21 @@ Canvas.Popcorn = {
 		
 		if (thisVid.paused()){
 			$("#play-clip").text("Pause Clip");
-			thisVid.play(Canvas.Popcorn.clipBegin);
+			thisVid.play(Canvas.Popcorn.clipCurrent);
 			thisVid.on('timeupdate', function(){
 				$( "#slider-range" ).slider( "option", "values", [Canvas.Popcorn.clipBegin,thisVid.currentTime(), Canvas.Popcorn.clipEnd] );
+				Canvas.Popcorn.clipCurrent = thisVid.currentTime();
 				if(thisVid.currentTime() >= Canvas.Popcorn.clipEnd){			
-					Canvas.Popcorn.stopPlayingClip();
+					//Canvas.Popcorn.stopPlayingClip();
+					thisVid.pause();
+					thisVid.off('timeupdate');//remove event listener
+					$("#play-clip").text("Play Clip");
+					Canvas.Popcorn.clipCurrent = Canvas.Popcorn.clipBegin;
 				}
 			})
 		}else{
 			thisVid.pause();
+			thisVid.off('timeupdate');//remove event listener
 			$("#play-clip").text("Play Clip");
 		}
 	},

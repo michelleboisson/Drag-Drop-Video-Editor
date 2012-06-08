@@ -145,9 +145,7 @@ Local.Video = {
         var thisVid = $("#"+id+" video");
         if (popcorn.paused() == true){
 
-	        $('video','#videos').each(function(){
-		        this.pause(); //find all videos in #vid and pause them
-		    });
+	        Local.Video.stopAll();
  
             //Local.Video.play(id-1);
             var start = thisVid.attr('startClip');
@@ -163,18 +161,14 @@ Local.Video = {
 	            thisVid.attr('startClip', start);
             }    
             
-            if (popcorn.currentTime() >= stop){
-	            //start = thisVid.attr('startClip');
-	            //popcorn.currentTime(start);
-            }
-            
            	popcorn.play(start);
            	console.log("play until: "+ stop);
            	popcorn.on('timeupdate', function() { 
+           	//if it reaches the 'end', meaning the clip end
            	if(popcorn.currentTime() >= stop){	
            		popcorn.pause();
            		popcorn.currentTime(popcorn.duration());
-				console.log(popcorn, popcorn.currentTime(), popcorn.ended())
+				console.log(popcorn, popcorn.currentTime(), popcorn.ended());
 				}
            	});
 
@@ -198,6 +192,11 @@ Local.Video = {
         jQuery(".song").removeClass("playing");
         jQuery("#play_button_"+Local.Songs.queueNumber).addClass("paused");
     },
+    stopAll : function(){
+	    $('video','#videos').each(function(){
+			this.pause(); //find all videos in #vid and pause them
+		});
+    },
     played : function(){
         jQuery(".play_button").removeClass("paused");
         jQuery("#song_"+Local.Songs.queueNumber).addClass("playing");
@@ -219,6 +218,7 @@ Local.Edit = {
 	open : function(e){
 		console.log("Opening edit window", e);
 		
+		Local.Video.stopAll();
 		var videoId = e.target.id;
 		
 		//create modal window

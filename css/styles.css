@@ -17,6 +17,11 @@ canvas {
 	left: 0;
 }
 
+#slider-range{
+	margin: 10px 0;	
+}
+
+
 .connector {
   border-radius: 50%;
   width: 20px;
