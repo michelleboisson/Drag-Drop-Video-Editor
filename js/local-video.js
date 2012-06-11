@@ -143,8 +143,8 @@ Local.Video = {
        */
              
         var thisVid = $("#"+id+" video");
-        //if (popcorn.paused() == true || thisVid.ended()){
-	    if (popcorn.paused() == true){
+        if (popcorn.paused() == true || thisVid.ended()){
+	    //if (popcorn.paused() == true ){
 	        Local.Video.stopAll();
  
             //Local.Video.play(id-1);
