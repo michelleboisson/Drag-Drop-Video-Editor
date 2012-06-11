@@ -163,6 +163,7 @@ Canvas.Popcorn = {
 			console.log("YEP!");
 			$( "#dialog-modal" ).remove();
 			jsPlumb.removeAllEndpoints($("#"+Canvas.Popcorn.videoId).parent());
+			jsPlumb.detachAllConnections($("#"+Canvas.Popcorn.videoId).parent());
 
 			$("#"+Canvas.Popcorn.videoId).parent().remove();
 		}
