@@ -12,6 +12,8 @@ You can:
          * "play sequence fullscreen" button turns into "close fullscreen" button
 == for now, the user must start the first video by clicking on it, so the player knows where to where to start
 
+* double-click a video to open the editor
+	* move the sliders to set in and out points for the clip
 
 # STILL TO DO
 * have the player know what the first video is, without the user having to click on it
