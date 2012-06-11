@@ -234,6 +234,8 @@ function playNextConnectedfs(x, lastVid){
 				return;
 			}
 			next = next[0].targetId;
+			//reset timer
+			popcorn.currentTime(0);
 			console.log("updating video", next);
 			//Local.Video.play(next);
 			playNextConnectedfs(next, lastVid);
