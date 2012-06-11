@@ -26,7 +26,7 @@ $(document).ready(function(){
 			
 			var allVideos = [];
 			var firstID;
-			var sumthinPlaying = false;
+			var sumthinPlaying = false;					
 					
 			//loop through the elements in the dom, count the videos
 			$("video").each(function(index){			
@@ -51,14 +51,16 @@ $(document).ready(function(){
 			else{
 				console.log("something playing");
 				console.log("now playing", firstID);
+				$(".big_description").append("<span id='alert' class='onair'></span>");
 				$("#alert").html("Playing the sequence");
+
 				for (var p = 0; p < allVideos.length; p++){
 					console.log("pausing all videos");
 					allVideos[p].get(0).pause();
 					allVideos[p].get(0).currentTime = 0;
 				}
 				
-				var fsVidHtml = "<div id='fullscreenvidsdiv'><video src='' id='fullscreenvids' class='video-js vjs-default-skin' preload='auto' height=360 width=640></video></div>";
+				var fsVidHtml = "<div id='fullscreenvidsdiv'><video src='' id='fullscreenvids' class='video-js vjs-default-skin' preload='auto' controls height=360 width=640></video></div>";
 			
 			$("#videos").before(fsVidHtml);
 			$("#videos .local_drop").animate({
@@ -78,7 +80,12 @@ $(document).ready(function(){
 			  
 			  });
 			
-			
+			var fsVids = document.getElementById("fullscreenvids");
+			//	console.log(fsVids);
+			fsVids.addEventListener('click', function(){
+				this.webkitEnterFullscreen();
+			});
+
 				}//end if fullscreenvids exists
 	else{
 		$("#playallfs").text("Play Preview Fullscreen");
@@ -162,6 +169,7 @@ function playNextConnected(x, lastVid){
 	
 	thisVid.on("ended", function(){
 //		console.log("stopped");
+		thisVid.currentTime(0);
 		var next = jsPlumb.getConnections({source: x});
 //		console.log(x, next);
 		if(next[0] == undefined){
@@ -180,35 +188,62 @@ function playNextConnected(x, lastVid){
 
 function playNextConnectedfs(x, lastVid){
 	console.log("playing vids, switching.", x);
+	var popcorn = Popcorn("#fullscreenvids");
+	
 	$("#fullscreenvids").attr('src', $("#"+x+" video").attr('src')).center(); 
-	$("#fullscreenvids").get(0).play();
-
-	$("#fullscreenvids").get(0).addEventListener("ended", function(){
-		
-		console.log("stopped");
-		var next = jsPlumb.getConnections({source: x});
-		console.log("next: "+next);
-		if(next[0] == undefined || next[0] == ""){
-			$("#alert").remove();
-			return;
-		}
-		next = next[0].targetId;
-		console.log(next);
-		if (next != lastVid){
+	
+	//popcorn.media.src=$("#"+x+" video").attr('src');
+	
+	var thisVid = $("#"+x+" video");
+	//popcorn.load();
+	$("#fullscreenvids").load();
+	
+	var start = thisVid.attr('startClip');
+    var stop = thisVid.attr('endClip');
+            
+    if (stop == ''){
+        stop = thisVid.duration();
+        thisVid.attr('endClip', stop);
+    }
+    
+    if (start == ''){
+        start = 0;
+        thisVid.attr('startClip', start);
+    }       
+    console.log("about to play!");
+    popcorn.on('loadedmetadata', function() {
+    	console.log("media",popcorn.duration());
+    	popcorn.play(start);
+    });
+    //console.log("ready state: "+ Canvas.Popcorn.checkReadyState(popcorn));
+   	//$("#fullscreenvids").currentTime(start).play();
+   	//popcorn.play(start);
+   	console.log("play until: "+ stop);
+   	
+   	popcorn.on("timeupdate", function() { 
+   	//if it reaches the 'end', meaning the clip end
+	   	if(popcorn.currentTime() >= stop){	
+	   		popcorn.pause();
+	   		//popcorn.currentTime(popcorn.duration());
+			console.log(popcorn, popcorn.currentTime(), popcorn.ended());
+	
+			var next = jsPlumb.getConnections({source: x});
+			console.log(x, next);
+			if(next[0] == undefined){
+				$("#alert").remove();
+				return;
+			}
+			next = next[0].targetId;
 			console.log("updating video", next);
-			
+			//Local.Video.play(next);
 			playNextConnectedfs(next, lastVid);
-		}
-		
-	});//video ended eventlistener
-
-	var fsVids = document.getElementById("fullscreenvids");
-//	console.log(fsVids);
-	fsVids.addEventListener('click', function(){
-		this.webkitEnterFullscreen();
-	});
+		}//end if we reach the end of the clip	
+	});//end on timeupdate
 
 }
+	
+
+
 
 
 

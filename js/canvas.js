@@ -70,7 +70,8 @@ Canvas.Popcorn = {
     }
     if ( rdy === 4 ) {
         console.log( "can play whole video at current buffer rate, readyState is " + rdy );
-        Canvas.Popcorn.initSlider(popcorn);
+        return true;
+        //Canvas.Popcorn.initSlider(popcorn);
         
     } else {
         setTimeout( Canvas.Popcorn.checkReadyState(popcorn), 1000 );
