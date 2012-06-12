@@ -119,8 +119,8 @@ Local.Songs = {
 
            // var fileURL = window.URL.createObjectURL(file);
             console.log("videoNode: " + videoNode);
-            var popcorn = popcorn("video"+_position);
-            Canvas.Popcorn.checkReadyState(popcorn);
+            //var popcorn = popcorn("video"+_position);
+            //Canvas.Popcorn.checkReadyState(popcorn);
             //Local.GetID3(file, position);
     },
     click : function(e){
