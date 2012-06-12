@@ -134,16 +134,10 @@ Local.Video = {
     video : null,
     play : function(id){
         var popcorn = Popcorn("#video"+id);
-       /*  popcorn.footnote({
-             start: 2,
-             end: 5,
-             target: "footnote",
-             text: "Pop! "+_position
-             }); 
-       */
              
         var thisVid = $("#"+id+" video");
-        if (popcorn.paused() == true || thisVid.ended()){
+
+        if (popcorn.paused() == true){
 	    //if (popcorn.paused() == true ){
 	        Local.Video.stopAll();
  
@@ -163,18 +157,21 @@ Local.Video = {
             
            	popcorn.play(start);
            	console.log("play until: "+ stop);
+           	
            	popcorn.on('timeupdate', function() { 
            	//if it reaches the 'end', meaning the clip end
-           	if(popcorn.currentTime() >= stop){	
-           		popcorn.pause();
-           		popcorn.currentTime(popcorn.duration());
-				console.log(popcorn, popcorn.currentTime(), popcorn.ended());
+		       	if(popcorn.currentTime() >= stop){
+		       		console.log("done playing");	
+		       		//popcorn.pause();
+		       		popcorn.currentTime(popcorn.duration());
+					console.log(popcorn, popcorn.currentTime(), popcorn.ended());
+					popcorn.off('timeupdate');
 				}
            	});
 
         	//thisVid.get(0).play();
         	var percentage = thisVid.get(0).currentTime / thisVid.get(0).duration * 100;
-        	console.log("played", popcorn.played());
+        	//console.log("played", popcorn.played());
         }
         else {
         	//thisVid.get(0).pause();

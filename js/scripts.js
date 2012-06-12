@@ -31,26 +31,31 @@ $(document).ready(function(){
 			//loop through the elements in the dom, count the videos
 			$("video").each(function(index){			
 				
-
-				if($(this).get(0).paused == false){
-					firstID = $(this).parent().attr("id");
-					console.log("now playing", firstID);
-					sumthinPlaying = true;
-
+				var parentID = $(this).parent().attr("id");
+			
+				var s = jsPlumb.getConnections({source: parentID});  
+				//console.log("connection source for: ", parentID , s);
+				//console.log("connection source for: ", parentID , s[1].sourceId, s[1].targetId);
+				
+				var t = jsPlumb.getConnections({target: parentID});  
+				console.log("connection target for: ", parentID , t);
+				
+				//if this video has no source video, it's the first video in the sequence
+				if (t[0] == undefined){
+					firstVid = parentID;
+				}
+				//if this video has no target video, it's the last video in the sequence
+				if (s[0] == undefined){
+					lastVid = parentID;
 				}
 				
 				allVideos.push($(this));
 				console.log("now playing", firstID);
 			}).promise()
 			  .done(function(){
-			  console.log("Checking playing...");
-			if (sumthinPlaying == false){
-				console.log("nothing playing");
-				$(".big_description").append("<span id='alert'>Start playing the first video</span>");
-			}
-			else{
+			  
 				console.log("something playing");
-				console.log("now playing", firstID);
+				console.log("now playing", firstVid);
 				$(".big_description").append("<span id='alert' class='onair'></span>");
 				$("#alert").html("Playing the sequence");
 
@@ -60,7 +65,7 @@ $(document).ready(function(){
 					allVideos[p].get(0).currentTime = 0;
 				}
 				
-				var fsVidHtml = "<div id='fullscreenvidsdiv'><video src='' id='fullscreenvids' class='video-js vjs-default-skin' preload='auto' controls height=360 width=640></video></div>";
+				var fsVidHtml = "<div id='fullscreenvidsdiv'><video src='' id='fullscreenvids' class='video-js vjs-default-skin' preload='auto' height=360 width=640></video></div>";
 			
 			$("#videos").before(fsVidHtml);
 			$("#videos .local_drop").animate({
@@ -71,13 +76,8 @@ $(document).ready(function(){
 			});//end function animate callback
 					
 
-			console.log("firstID again ", firstID);
-					playNextConnectedfs(firstID, -1);	
-			}
-								
-				
-			  
-			  
+			console.log("firstID again ", firstVid);
+					playNextConnectedfs(firstVid, lastVid);		  
 			  });
 			
 			var fsVids = document.getElementById("fullscreenvids");
@@ -117,16 +117,32 @@ $(document).ready(function(){
 		//loop through the elements in the dom, count the videos
 		$("video").each(function(index){
 			var parentID = $(this).parent().attr("id");
-
-			if($(this).get(0).paused == false){
-				console.log("now playing", parentID);
-				firstID = parentID;
-				sumthinPlaying = true;
-			}
 			
+			var s = jsPlumb.getConnections({source: parentID});  
+			//console.log("connection source for: ", parentID , s);
+			//console.log("connection source for: ", parentID , s[1].sourceId, s[1].targetId);
+			
+			var t = jsPlumb.getConnections({target: parentID});  
+			console.log("connection target for: ", parentID , t);
+			
+			//if this video has no source video, it's the first video in the sequence
+			if (t[0] == undefined){
+				firstVid = parentID;
+			}
+			//if this video has no target video, it's the last video in the sequence
+			if (s[0] == undefined){
+				lastVid = parentID;
+			}
+
 			allVideos.push($(this));
-		});
-			console.log("Checking playing...");
+		}).promise()
+		.done(function(){
+				  playNextConnected(firstVid, lastVid);
+			  });
+		
+		
+		
+/*			console.log("Checking playing...");
 			if (sumthinPlaying == false){
 				console.log("nothing playing");
 				$(".big_description").append("<span id='alert'>Start playing the first video</span>");
@@ -137,7 +153,7 @@ $(document).ready(function(){
 				$("#alert").html("Playing the sequence");
 				playNextConnected(firstID, -1);
 			}
-
+*/
 			//console.log(allVideos.length +" movies to play");
 			//playNext(0, allVideos);
 	});
@@ -163,28 +179,33 @@ function playNextConnected(x, lastVid){
 	var thisVid = Popcorn("#video"+x);
 	
 	//thisVid.play();
-	console.log(x);
+	//console.log(x);
 	
-	//Local.Video.play(x);
+	Local.Video.play(x);
 	
-	thisVid.on("ended", function(){
+	//$("#video"+x).get(0).addEventListener("ended", function(){
+	thisVid.on('ended', function(){
 //		console.log("stopped");
-		thisVid.currentTime(0);
+		//this.get(0).currentTime(0);
+		thisVid.off('ended');
 		var next = jsPlumb.getConnections({source: x});
-//		console.log(x, next);
+		console.log(x, next);
+		
 		if(next[0] == undefined){
+			console.log("nope. done");
 			$("#alert").remove();
 			return;
 		}
-			next = next[0].targetId;
-		if (next != lastVid){
-			console.log("updating video", next);
-			Local.Video.play(next);
-			playNextConnected(next, lastVid);
-		}
+		next = next[0].targetId;
+		console.log("updating video", next);
+		//Local.Video.play(next);
+		
+		playNextConnected(next, lastVid);
 	
 	});
 }
+
+
 
 function playNextConnectedfs(x, lastVid){
 	console.log("playing vids, switching.", x);
@@ -214,6 +235,7 @@ function playNextConnectedfs(x, lastVid){
     popcorn.on('loadedmetadata', function() {
     	console.log("media",popcorn.duration());
     	popcorn.play(start);
+    	popcorn	.off('loadedmetadata');
     });
     //console.log("ready state: "+ Canvas.Popcorn.checkReadyState(popcorn));
    	//$("#fullscreenvids").currentTime(start).play();
@@ -224,12 +246,14 @@ function playNextConnectedfs(x, lastVid){
    	//if it reaches the 'end', meaning the clip end
 	   	if(popcorn.currentTime() >= stop){	
 	   		popcorn.pause();
+	   		popcorn.off('timeupdate');
 	   		//popcorn.currentTime(popcorn.duration());
 			console.log(popcorn, popcorn.currentTime(), popcorn.ended());
 	
 			var next = jsPlumb.getConnections({source: x});
 			console.log(x, next);
 			if(next[0] == undefined){
+				console.log("nope. done");
 				$("#alert").remove();
 				return;
 			}
