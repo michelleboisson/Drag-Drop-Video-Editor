@@ -16,7 +16,10 @@ You can:
 	* move the sliders to set in and out points for the clip
 
 # STILL TO DO
-* have the player know what the first video is, without the user having to click on it
+* ~~have the player know what the first video is, without the user having to click on it~~
+* make the entire canvas scalable and moveable
+* cross-fade effect between video clips
+* look into cleaning up anchors and connectors (why do they move?)
 * more feedback/labels/directions on the UI  
 
 # HOW IT WAS MADE
@@ -26,3 +29,5 @@ http://ex.fm/labs/local
 And the line drawing tool is taken from
 http://jsplumb.org/jquery/demo.html
 
+Some video control stuff from
+popcornjs.org
