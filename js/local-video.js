@@ -53,18 +53,25 @@ Local.Drag = {
         e.preventDefault();
     },
     drop : function(e){
-        jQuery(this).removeClass("drag_over");
-        jQuery(this).find(".local_drop_text").remove();
-        var dt = e.dataTransfer;
-        var files = dt.files;
-        for (var i = 0; i < files.length; i++){
-            var file = files[i];
-            Local.Songs.add(file, this);
+        if ($(this).children("video").length <= 0){
+        	console.log("nothing here");
+	        jQuery(this).removeClass("drag_over");
+	        jQuery(this).find(".local_drop_text").remove();
+	        
+	        var dt = e.dataTransfer;
+	        var files = dt.files;
+	        for (var i = 0; i < files.length; i++){
+	            var file = files[i];
+	            Local.Songs.add(file, this);
+	        }
+	        Local.Init(Local.Songs.list.length+1);
         }
-        Local.Init(Local.Songs.list.length+1);
-        
+        else{
+	        console.log("do not drop here");
+	        $(this).css("cursor","progress");
+        }
         e.stopPropagation();
-        e.preventDefault();          
+        e.preventDefault();   
     },
     click : function(e){
     	var parentID = e.target.parentNode.getAttribute("id");

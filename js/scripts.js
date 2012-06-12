@@ -140,22 +140,6 @@ $(document).ready(function(){
 				  playNextConnected(firstVid, lastVid);
 			  });
 		
-		
-		
-/*			console.log("Checking playing...");
-			if (sumthinPlaying == false){
-				console.log("nothing playing");
-				$(".big_description").append("<span id='alert'>Start playing the first video</span>");
-			}
-			else{
-			console.log("something playing");
-				$(".big_description").append("<span id='alert' class='onair'></span>");
-				$("#alert").html("Playing the sequence");
-				playNextConnected(firstID, -1);
-			}
-*/
-			//console.log(allVideos.length +" movies to play");
-			//playNext(0, allVideos);
 	});
 	
 	
