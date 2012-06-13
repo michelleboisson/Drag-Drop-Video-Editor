@@ -14,7 +14,7 @@ Local.Init = function(position){
     
     _position = position;
 
-    var vidHolderHtml = "<div class='local_drop ui-widget-content' id="+_position+"><div class='local_drop_text'>Drop movie files here<br>(mp4)</div></div>";
+    var vidHolderHtml = "<div class='zoomTarget local_drop ui-widget-content' id="+_position+"><div class='local_drop_text'>Drop movie files here<br>(mp4)</div></div>";
     
     $("#videos").append(vidHolderHtml);
          

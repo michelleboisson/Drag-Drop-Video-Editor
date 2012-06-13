@@ -15,6 +15,7 @@
         	.demo {
 	        	width: 50%;
 	        	margin: 50px auto;
+	        	background: rgba(220,220,220,0.85);
         	}
         </style>
         
@@ -96,6 +97,34 @@
 	   popcorn.listen("timeupdate", function() {
 	   		//console.log(popcorn.played());
 	   	});           	
+	   	
+	   	
+	   	
+	   	 jsPlumb.draggable($(".demo"));
+    
+	
+	//jsPlumb.draggable($(".local_drop");
+	var sourcePointOptions = {
+		endpoint:"Dot",
+		paintStyle:{ width:25, height:21, fillStyle:'#ff5ff2' },
+		connectorStyle : { strokeStyle:"#666" },
+		isTarget:true,
+		anchor: "LeftMiddle"
+	};
+	var targetPointOptions = {
+		endpoint:"Dot",
+		paintStyle:{ width:25, height:21, fillStyle:'#ff5ff2' },
+		isSource:true,
+		connectorStyle : { strokeStyle:"#666" },
+		anchor: "RightMiddle",
+		connectorOverlays: [ [ "Arrow", { location:0.5 } ] ]
+	};
+	var endpoint = jsPlumb.addEndpoint($(".demo"), targetPointOptions);
+	var newpoint = jsPlumb.addEndpoint($(".demo"), sourcePointOptions);
+
+	   	
+	   	
+	   	
 	 }, false );//end document ready
 	 
 

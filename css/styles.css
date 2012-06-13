@@ -21,6 +21,10 @@ canvas {
 	margin: 10px 0;	
 }
 
+.zoomViewport{
+	background: #e5e5e5;
+}
+
 
 .connector {
   border-radius: 50%;
