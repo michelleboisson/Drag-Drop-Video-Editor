@@ -12,8 +12,26 @@ $(document).ready(function(){
    		Local.Init(number+=1);
    });
 */	
+$("#videos").draggable({containment: "#zoomViewport"});
 
-
+$('#videos').mousewheel(function(event, delta, deltaX, deltaY) {
+    console.log(delta, deltaX, deltaY);
+   var zoom = parseFloat($("#videos").css("zoom"));
+   
+   //if (delta > 0 ){
+	   //scrolling up   
+	   console.log("get bigger!", zoom);
+	   zoom = zoom + delta/10;
+	   $("#videos").css("zoom", zoom);
+	   console.log("zoom!", zoom);
+  // }
+  // if (delta < 0 ){
+	   //scrolling down
+//	   zoom = zoom - 0.1;
+//	   $("#videos").css("zoom", zoom);
+//   }
+    
+});
 	
 	$("#playallfs").live('click', function(){
 		

@@ -14,7 +14,7 @@ Local.Init = function(position){
     
     _position = position;
 
-    var vidHolderHtml = "<div class='zoomTarget local_drop ui-widget-content' id="+_position+"><div class='local_drop_text'>Drop movie files here<br>(mp4)</div></div>";
+    var vidHolderHtml = "<div class='local_drop ui-widget-content' id="+_position+"><div class='local_drop_text'>Drop movie files here<br>(mp4)</div></div>";
     
     $("#videos").append(vidHolderHtml);
          
@@ -74,6 +74,12 @@ Local.Drag = {
         e.preventDefault();   
     },
     click : function(e){
+    
+    	var ele = e.target.id;
+    	console.log(e.target.id);
+    	//$("#"+ele).zoomTarget();
+        e.stopPropagation();
+    
     	var parentID = e.target.parentNode.getAttribute("id");
     	//is this click from a drag, do nothing
     	if ($("#"+parentID).hasClass("ui-draggable-dragged")){
