@@ -2,7 +2,7 @@ jsPlumb.bind("ready", function() {
 	
 		
 	// your jsPlumb related init code goes here
-
+//jsPlumb.draggable($("#videos"));
 	console.log("jsPlumb is ready");
 //	Canvas.Bind(); 
 	
@@ -21,7 +21,8 @@ Canvas.Bind = function(id){
     jsPlumb.draggable($(".local_drop"),{
     	stop: function(){
     		$(this).addClass("ui-draggable-dragged");
-    	}	
+    	},
+    	containment:"parent"
     });
     
 	

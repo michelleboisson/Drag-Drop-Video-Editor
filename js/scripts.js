@@ -12,27 +12,23 @@ $(document).ready(function(){
    		Local.Init(number+=1);
    });
 */	
-$("#videos").draggable({containment: "#zoomViewport"});
+//$("#videos").draggable({containment: "#zoomViewport"});
 
+
+/*
 $('#videos').mousewheel(function(event, delta, deltaX, deltaY) {
-    console.log(delta, deltaX, deltaY);
-   var zoom = parseFloat($("#videos").css("zoom"));
+       var zoom = parseFloat($("#videos").css("zoom"));
+       var top = parseFloat($("#videos").css("top"));
+       var left = parseFloat($("#videos").css("left"));
    
-   //if (delta > 0 ){
-	   //scrolling up   
-	   console.log("get bigger!", zoom);
 	   zoom = zoom + delta/10;
 	   $("#videos").css("zoom", zoom);
+	   $("#videos").css("left", zoom * top);
+	   $("#videos").css("top", zoom * left);
 	   console.log("zoom!", zoom);
-  // }
-  // if (delta < 0 ){
-	   //scrolling down
-//	   zoom = zoom - 0.1;
-//	   $("#videos").css("zoom", zoom);
-//   }
     
 });
-	
+	*/
 	$("#playallfs").live('click', function(){
 		
 		if ($("#fullscreenvids").length <= 0){
