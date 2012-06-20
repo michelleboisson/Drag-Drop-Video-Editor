@@ -88,6 +88,9 @@ Local.Drag = {
     		//if this click is a true click, not a drag, play/pause the click
     		Local.Video.play(e.target.parentElement.getAttribute('id'));
     	}
+    	if (ele == "done-clip"){
+	    	Local.Edit.close(e);
+    	}
     }
 }
 
@@ -266,10 +269,14 @@ Local.Edit = {
 		//$("#"+videoId).parent().addClass('flip');
 	}
 	 else{
-	console.log("flipping back to the front", e);
+	 	Local.Edit.close(e);
+		}	
+	},
+	close : function(e){
+		console.log("flipping back to the front", e);
 		$(".back").remove();
-		$("#"+videoId).parent().removeClass('flip');
-	}	
+		$("#"+e.target.id).parent().removeClass('flip');
+
 	} 
 };
 

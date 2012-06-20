@@ -12,23 +12,13 @@ $(document).ready(function(){
    		Local.Init(number+=1);
    });
 */	
-//$("#videos").draggable({containment: "#zoomViewport"});
+ $(".zoomTarget").live('dblclick', function(evt) {
+        $(this).zoomTo({targetsize:0.75, duration:600});
+        evt.stopPropagation();
+    });
 
 
-/*
-$('#videos').mousewheel(function(event, delta, deltaX, deltaY) {
-       var zoom = parseFloat($("#videos").css("zoom"));
-       var top = parseFloat($("#videos").css("top"));
-       var left = parseFloat($("#videos").css("left"));
-   
-	   zoom = zoom + delta/10;
-	   $("#videos").css("zoom", zoom);
-	   $("#videos").css("left", zoom * top);
-	   $("#videos").css("top", zoom * left);
-	   console.log("zoom!", zoom);
-    
-});
-	*/
+	
 	$("#playallfs").live('click', function(){
 		
 		if ($("#fullscreenvids").length <= 0){
