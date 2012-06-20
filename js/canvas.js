@@ -120,6 +120,8 @@ Canvas.Popcorn = {
 					.addEventListener('click', Canvas.Popcorn.playClip, false);
 			document.getElementById("delete-clip")
 					.addEventListener('click', Canvas.Popcorn.deleteClip, false);
+			document.getElementById("done-clip")
+					.addEventListener('click', Canvas.Popcorn.doneClip, false);
 	},
 	playClip : function(){
 		var thisVid = Canvas.Popcorn.thispopcorn;
@@ -156,10 +158,10 @@ Canvas.Popcorn = {
 		
 		
 	},
-	saveClip : function(){
+	saveClip : function(e){
 		alert("Saving the clip!");
 	},
-	deleteClip : function(){
+	deleteClip : function(e){
 		if (confirm("Deleting this clip from the canvas! Are you sure?")){
 			console.log("YEP!");
 			$( "#dialog-modal" ).remove();
@@ -168,7 +170,9 @@ Canvas.Popcorn = {
 
 			$("#"+Canvas.Popcorn.videoId).parent().remove();
 		}
-		
+	},
+	doneClip : function(e){
+		console.log("done target: " +e.target.id);
 	}
 }
 

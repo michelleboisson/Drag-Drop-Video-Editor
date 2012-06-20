@@ -97,8 +97,8 @@ Local.Songs = {
     add : function(file, target){
         Local.Songs.list.push(file);
         //var position = Local.Songs.list.length - 1;
-        var videohtml = "<video position='"+_position+"' src='' id='video"+_position+"' class='video-js vjs-default-skin' "+
-  "preload='auto' width='320' height='180' startClip='' endClip='' stopped='true'></video>";
+        var videohtml = "<video position='"+_position+"' src='' id='video"+_position+"' class='front video-js vjs-default-skin' "+
+  "preload='auto' width='320' height='180' startClip='' endClip='' stopped='true'></video><div class='back'></div>";
 		
 	//jQuery("#local_drop").append(videohtml);
       		var localDrop = target;
@@ -226,17 +226,19 @@ Local.Video = {
 
 Local.Edit = {
 	open : function(e){
+	
 		console.log("Opening edit window", e);
 		
 		Local.Video.stopAll();
 		var videoId = e.target.id;
-		
-		//create modal window
-		var modal = document.createElement("div");
-		modal.setAttribute('id','dialog-modal');
-		modal.setAttribute('title', 'Edit '+videoId);		
-		document.getElementById("videos").appendChild(modal);
-		
+
+		if(! $("#"+videoId).parent().hasClass('flip')){
+			console.log("flipping to edit",videoId);
+		//var backside = document.createElement("div");
+		//backside.setAttribute('class','back');
+		//modal.setAttribute('title', 'Edit '+videoId);		
+//		$("#"+videoId).parent().append(backside);
+
 		//populate modal window with edit tools
 		var videoSrc = document.getElementById(videoId).getAttribute("src");
 		
@@ -246,26 +248,28 @@ Local.Edit = {
 	"<input type='text' id='amount' style='border:0; color:#f6931f; font-weight:bold;' />"+
 "<div id='slider-range'></div>"+
 "<button id='play-clip'>Play Clip</button> "+
-"<button id='delete-clip'>Delete Clip</button>";
+"<button id='delete-clip'>Delete Clip</button></div>"+
+"<button id='done-clip'>Done</button></div>";
 		
+		//var videohtml = "<div class='back'></div>";
+
+		var videoDiv = document.getElementById(videoId);
 		
-		
-		$( "#dialog-modal" ).dialog({
-			width: 800,
-			height: 500,
-			modal: true,
-			closeOnEscape: true,
-			close: function(event, ui) { 
-				$(this).remove();
-			}
-		});
-		
-		var modal = document.getElementById("dialog-modal");
-		modal.innerHTML = videohtml;
-		var popcorn = Popcorn("#"+videoId);
+		//var editwindow = $(".back");
+		$("#"+videoId).parent().find(".back").append(videohtml);
+		$("#"+videoId).parent().addClass('flip');
+		//var popcorn = Popcorn("#"+videoId);
 		//var popcorn = Popcorn("#edit-"+videoId);
 		//Canvas.Popcorn.checkReadyState(popcorn);
-		Canvas.Popcorn.initSlider(popcorn.duration(), videoId);
+		//Canvas.Popcorn.initSlider(popcorn.duration(), videoId);
+		//$("#"+videoId).parent().append(editwindow);
+		//$("#"+videoId).parent().addClass('flip');
+	}
+	 else{
+	console.log("flipping back to the front", e);
+		$(".back").remove();
+		$("#"+videoId).parent().removeClass('flip');
+	}	
 	} 
 };
 
