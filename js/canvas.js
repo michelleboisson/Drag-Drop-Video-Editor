@@ -173,6 +173,7 @@ Canvas.Popcorn = {
 	},
 	doneClip : function(e){
 		console.log("done target: " +e.target.id);
+		Local.Edit.close(e);
 	}
 }
 

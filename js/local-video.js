@@ -149,6 +149,7 @@ Local.Songs = {
 Local.Video = {
     video : null,
     play : function(id){
+    	console.log("playing #", id);
         var popcorn = Popcorn("#video"+id);
              
         var thisVid = $("#"+id+" video");
@@ -261,10 +262,10 @@ Local.Edit = {
 		//var editwindow = $(".back");
 		$("#"+videoId).parent().find(".back").append(videohtml);
 		$("#"+videoId).parent().addClass('flip');
-		//var popcorn = Popcorn("#"+videoId);
+		var popcorn = Popcorn("#"+videoId);
 		//var popcorn = Popcorn("#edit-"+videoId);
 		//Canvas.Popcorn.checkReadyState(popcorn);
-		//Canvas.Popcorn.initSlider(popcorn.duration(), videoId);
+		Canvas.Popcorn.initSlider(popcorn.duration(), videoId);
 		//$("#"+videoId).parent().append(editwindow);
 		//$("#"+videoId).parent().addClass('flip');
 	}

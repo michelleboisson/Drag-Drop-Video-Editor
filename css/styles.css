@@ -162,6 +162,8 @@ z-index: 4;
 	z-index: 900;
 	width: inherit;
 	height: inherit;
+	height: 180px;
+    width: 320px;
 	border: 1px solid #ccc;
 	background: #6b7077;
 	text-align: center;
@@ -226,9 +228,9 @@ z-index: 4;
 }
 
 .local_drop.flip .back {
-	z-index: 1000;
-	width: 1000px;
-	height:1000px;
+	z-index: 10000;
+	width: 660px;
+	height:600px;
 	-webkit-transform: rotateY(0deg);
 	-moz-transform: rotateY(0deg);
 
