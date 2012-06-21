@@ -74,11 +74,12 @@ Local.Drag = {
         e.preventDefault();   
     },
     click : function(e){
-    
+    	e.stopPropagation();
     	var ele = e.target.id;
     	console.log(e.target.id);
     	//$("#"+ele).zoomTarget();
-        e.stopPropagation();
+    	console.log("clicked on: ", ele);
+        
     
     	var parentID = e.target.parentNode.getAttribute("id");
     	//is this click from a drag, do nothing
@@ -276,7 +277,7 @@ Local.Edit = {
 	close : function(e){
 		console.log("flipping back to the front", e);
 		$(".back").remove();
-		$("#"+e.target.id).parent().removeClass('flip');
+		$("#"+e.target.id).parent().parent().removeClass('flip');
 
 	} 
 };
