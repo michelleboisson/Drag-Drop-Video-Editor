@@ -151,6 +151,7 @@ z-index: 4;
 	-webkit-perspective: 600px;
 	-moz-perspective: 600px;
 }
+.flip{ z-index: 100;}
 /* -- make sure to declare a default for every property that you want animated -- */
 /* -- general styles, including Y axis rotation -- */
 .local_drop .front {
@@ -187,7 +188,7 @@ z-index: 4;
 	transition: all .4s ease-in-out;
 }
 .local_drop.flip .front {
-	z-index: 900;
+	z-index: 100;
 	border-color: #eee;
 
 	-webkit-transform: rotateY(180deg);
@@ -227,9 +228,8 @@ z-index: 4;
 }
 
 .local_drop.flip .back {
-	z-index: 10000;
 	width: 660px;
-	height:600px;
+	height:470px;
 	-webkit-transform: rotateY(0deg);
 	-moz-transform: rotateY(0deg);
 
