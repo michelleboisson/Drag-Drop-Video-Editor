@@ -254,7 +254,7 @@ Local.Edit = {
 	"<input type='text' id='amount' style='border:0; color:#f6931f; font-weight:bold;' />"+
 "<div id='slider-range'></div>"+
 "<button id='play-clip'>Play Clip</button> "+
-"<button id='delete-clip'>Delete Clip</button></div>"+
+"<button id='delete-clip'>Delete Clip</button></div> "+
 "<button id='done-clip'>Done</button></div>";
 		
 		//var videohtml = "<div class='back'></div>";
@@ -268,6 +268,7 @@ Local.Edit = {
 		//var popcorn = Popcorn("#edit-"+videoId);
 		//Canvas.Popcorn.checkReadyState(popcorn);
 		Canvas.Popcorn.initSlider(popcorn.duration(), videoId);
+		//$("#"+videoId).siblings(".back").delay(3000).zoomTo({targetsize:0.75, duration:600});
 		//$("#"+videoId).parent().append(editwindow);
 		//$("#"+videoId).parent().addClass('flip');
 	}
@@ -278,6 +279,7 @@ Local.Edit = {
 	close : function(e){
 		console.log("flipping back to the front", e.target.id);
 		$("#"+e.target.id).parent().parent().removeClass('flip');
+		//$("#middle").zoomTo({targetsize:-0.5, duration:600});
 		$(".back").html("");
 	} 
 };

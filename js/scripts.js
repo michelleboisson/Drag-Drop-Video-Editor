@@ -19,7 +19,7 @@ $(document).ready(function(){
    });
 */	
  $(".zoomTarget").live('dblclick', function(evt) {
-        $(this).zoomTo({targetsize:0.75, duration:600});
+ //       $(this).zoomTo({targetsize:0.75, duration:600});
         evt.stopPropagation();
     });
 
