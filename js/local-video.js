@@ -28,8 +28,6 @@ Local.Init = function(position){
     localDrop.addEventListener("dragleave", Local.Drag.leave, false);
     localDrop.addEventListener("dragover", Local.Drag.over, false);
     localDrop.addEventListener("drop", Local.Drag.drop, false);
-    localDrop.addEventListener("click", Local.Drag.click, false);
-    localDrop.addEventListener("dblclick", Local.Edit.open, false);
     
     Canvas.Bind(_position);   
 
@@ -108,8 +106,11 @@ Local.Songs = {
       		var localDrop = target;
       		localDrop.innerHTML += videohtml;
       		
-        //var file = files[0];
-        
+      		var thisVid = document.getElementById("video"+_position);
+      		
+      		thisVid.addEventListener("click", Local.Drag.click, false);
+      		thisVid.addEventListener("dblclick", Local.Edit.open, false);
+
         	
             var type = file.type;
             console.log("type: "+type);
@@ -275,10 +276,9 @@ Local.Edit = {
 		}	
 	},
 	close : function(e){
-		console.log("flipping back to the front", e);
-		$(".back").remove();
+		console.log("flipping back to the front", e.target.id);
 		$("#"+e.target.id).parent().parent().removeClass('flip');
-
+		$(".back").html("");
 	} 
 };
 

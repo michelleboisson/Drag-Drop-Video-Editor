@@ -1,5 +1,11 @@
 $(document).ready(function(){
    
+   
+   $(document).on("click", function(e){
+   		console.log("clicked on", e.target)
+   	});
+   
+   
    var number = 0;
    var i = 0;
    
