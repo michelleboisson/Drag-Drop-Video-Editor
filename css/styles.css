@@ -99,7 +99,7 @@ canvas {
 	overflow: hidden;
 	zoom:0;
 	height: 6000px;
-	top: 67px;
+	top: 91px;
 	border: #000 2px dashed;
 	position: relative;
 }
@@ -109,6 +109,7 @@ canvas {
 	background: #000;
 	padding: 20px;
 	z-index:20000;
+	margin-top: 91px
 }
 #fullscreenvids {
 	margin: 0 auto;
