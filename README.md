@@ -1,5 +1,7 @@
 A drag and drop video player. Connect videos visually to determine the sequence. (Chrome, please)
 
+Play with it here: http://michelleboisson.github.io/Drag-Drop-Video-Editor/
+
 # WHAT IT DOES
 ##You can:
 * drop videos in the placeholders from your desktop
